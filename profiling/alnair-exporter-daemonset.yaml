@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: alnair-exporter-daemonset
+#  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: alnair-exporter
+  template:
+    metadata:
+      labels:
+        app: alnair-exporter
+      annotations: # add annotation for prometheus scraping, not sure this matters
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9171'
+        prometheus.io/path: '/metrics' #default is /metrics
+
+    spec:
+      containers:
+        - name: alnair-exporter
+          image: centaurusinfra/alnair-exporter
+          #command: ["bash", "-c", "while true; do sleep 10; done;"] # for debug purpose 
+          args: ["REPOS", "pint1022/Kubeshare"]
+          ports:
+            - containerPort: 9171
+          
+

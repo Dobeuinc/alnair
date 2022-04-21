@@ -44,6 +44,13 @@ metadata:
 data:
   prometheus.yml: |
     scrape_configs:
+      - job_name: alnair
+        scrape_interval: 5s
+        kubernetes_sd_configs:
+          - role: pod
+            selectors:
+              - role: pod
+                label: "app=alnair-exporter"
       - job_name: cadvisor
         scrape_interval: 5s
         #tls_config:
